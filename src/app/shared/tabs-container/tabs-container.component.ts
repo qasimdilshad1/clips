@@ -13,9 +13,9 @@ export class TabsContainerComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     const activeTabs = this.tabs?.filter(
-      tab=>tab.active
+      tab => tab.active
     )
-    if (!activeTabs||activeTabs.filter.length === 0)
+    if (!activeTabs||activeTabs.length === 0)
     {
       this.selectTab(this.tabs!.first)
 
@@ -27,6 +27,7 @@ export class TabsContainerComponent implements AfterContentInit {
       tab.active=false
     })
     tab.active=true
+    return false 
 
   }
 
