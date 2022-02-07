@@ -1,6 +1,7 @@
 module.exports = {
   purge:{
     content:[
+      // './src/**/*.html' /* ... */
       './src/**/*.{html,ts}'
     ]
     

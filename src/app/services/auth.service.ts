@@ -4,15 +4,24 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 import Iuser from '../models/user.model';
+import {map} from  'rxjs/operators' 
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private usersCollection: AngularFirestoreCollection<Iuser>;
+  public isAuthenticated$: Observable<boolean>
+
   constructor(private auth: AngularFireAuth, private db: AngularFirestore) {
     this.usersCollection = db.collection('users');
+    auth.user.subscribe(console.log)
+    this.isAuthenticated$=auth.user.pipe(
+        map(user=>!!user)
+    )
   }
   public async createUser(userData: Iuser) {
     if (!userData.password) {
@@ -22,11 +31,20 @@ export class AuthService {
       userData.email,
       userData.password
     );
-    await this.usersCollection.add({
+
+    if(!userCred.user){
+      throw new Error('User cant be found')
+    }
+    await this.usersCollection.doc(userCred.user.uid).set({
       name: userData.name,
       email: userData.email,
       age: userData.age,
       phoneNumber: userData.phoneNumber,
     });
+
+    await userCred.user.updateProfile({
+      displayName:userData.name
+    });
+   
   }
 }
