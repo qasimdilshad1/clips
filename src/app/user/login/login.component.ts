@@ -7,7 +7,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  [x: string]: any;
+
   credentials = {
     email: '',
     password: '',
